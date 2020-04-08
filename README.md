@@ -21,18 +21,15 @@ THEN I need a database to store this information including:
 - employee id, first name, last name, job (by id), and manager (by id)
 
 WHEN I open the application
-THEN I am presented with prompts to:
+THEN I am presented with prompts to VIEW, ADD, UPDATE, REMOVE, or EXIT
 
-- view departments, roles, employees
-- add departments, roles, employees
-- remove departments, roles, employees
-- update departments, roles, employees
+WHEN I choose to VIEW
+THEN I can view departments, roles, employees or employees by department or manager
 
-WHEN I choose to view employee information
-THEN I can view all, or view by department or by manager
-
-WHEN I choose to add a department, role, or employee
-THEN I am presented with prompts to enter the relevant information and the new employee is added to the database
+WHEN I choose to ADD
+THEN I can choose to add a new department, role, or employee
+THEN I am presented with prompts to enter the information
+THEN the information is is added to the database
 
 WHEN I choose to remove a department, role, or employee
 THEN I am presented with a choice or what to remove, then a list of what is existing to select from, and what I select is removed from the database

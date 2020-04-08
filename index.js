@@ -1,6 +1,9 @@
-// Dependencies
+// Node dependencies
 const express = require("express");
 const mysql = require("mysql");
+const inquirer = require("inquirer");
+// Local dependencies
+const prompts = require("./modules/prompts");
 
 // Express app and port
 const app = express();
@@ -23,11 +26,15 @@ connection.connect(function (err) {
 
 // Main application
 function runApp() {
-	// temp function to test connection to database
-	var query = "SELECT * FROM departments";
-	connection.query(query, function (err, res) {
-		console.log(res);
+	inquirer.prompt(prompts.mainMenu).then((answers) => {
+		console.log(answers);
 	});
+
+	// temp function to test connection to database
+	// var query = "SELECT * FROM departments";
+	// connection.query(query, function (err, res) {
+	// 	console.log(res);
+	// });
 }
 
 // Server is listening
