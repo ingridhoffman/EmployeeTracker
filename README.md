@@ -38,7 +38,9 @@ WHEN I choose to remove a department, role, or employee
 THEN I am presented with a choice or what to remove, then a list of what is existing to select from, and what I select is removed from the database
 
 WHEN I choose to update a department, role, or employee
-THEN I am presented with a choice or what to update, then a list of what is existing to select from, and then I can modify what I select and it is changed in the database
+THEN I am presented with a choice of what to update, then a list of what is existing to select from, and then I can modify what I select and it is changed in the database
+
+### View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 
 WHEN I complete what I want to do in the application
 THEN I can choose EXIT
