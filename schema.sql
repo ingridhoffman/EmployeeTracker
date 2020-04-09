@@ -4,7 +4,7 @@ USE employee_db;
 
 CREATE TABLE departments(
   id INTEGER(11) AUTO_INCREMENT NOT NULL,
-  name VARCHAR(30) NOT NULL,
+  dept VARCHAR(30) NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -13,7 +13,8 @@ CREATE TABLE roles(
   title VARCHAR(30) NOT NULL,
   salary DECIMAL NOT NULL,
   dept_id INTEGER NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (dept_id) REFERENCES departments(id)
 );
 
 CREATE TABLE employees(
@@ -22,5 +23,7 @@ CREATE TABLE employees(
   last_name VARCHAR(30) NOT NULL,
   role_id INTEGER NOT NULL,
   manager_id INTEGER NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (role_id) REFERENCES roles(id),
+  FOREIGN KEY (manager_id) REFERENCES employees(id)
 );
