@@ -7,10 +7,13 @@ VALUES
     ('Engineering');
     
 INSERT INTO roles
-    (title, salary, department_id)
+    (title, salary, dept_id)
 VALUES
     ('Sales Lead', 100000, 1),
-    ('Salesperson', 80000, 1);
+    ('Salesperson', 80000, 1),
+	('Engineer', 120000, 2),
+	('Junior Engineer', 90000, 2);
+
     
 INSERT INTO employees
     (first_name, last_name, role_id, manager_id)
