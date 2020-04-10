@@ -1,6 +1,6 @@
 # EmployeeTracker
 
-A solution for managing a company's employees using node, inquirer, and MySQL.
+A solution for managing a company's employees using node, express, inquirer, and MySQL.
 
 ## User Story
 
@@ -48,5 +48,5 @@ THEN I can choose EXIT
 
 ## Contributing
 
-Content in the Assets folder provided by:
+Project requirements and content in the Assets folder provided by:
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.

@@ -4,14 +4,16 @@ const Table = require("cli-table");
 // Module export
 const display = module.exports;
 
-display.table = function (res, type) {
+// display data in tables
+display.table = async function (res, type) {
 	let head = [];
 	let colWidths = [];
 	let data = [];
+	console.log(typeof res);
 	res.map((item) => {
 		data.push(Object.values(item));
 	});
-	console.log(res);
+	console.log(data);
 	switch (type) {
 		case "dept":
 			head = ["ID", "Department Name"];
@@ -33,6 +35,5 @@ display.table = function (res, type) {
 	for (let i in data) {
 		displayTable.push(data[i]);
 	}
-	// currently not working for employee table due to null values in data
-	console.log(displayTable.toString(), "\n");
+	return console.log(displayTable.toString(), "\n");
 };

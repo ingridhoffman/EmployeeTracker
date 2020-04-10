@@ -68,7 +68,6 @@ const mainMenu = [
 		},
 	},
 ];
-
 const add = {
 	addDept: [
 		{
@@ -92,11 +91,10 @@ const add = {
 			type: "list",
 			name: "roleDept",
 			message: "Which department is this role in?",
-			choices: function (answers) {
-				return [1, 2, 3];
-				// error: not waiting for list of choices
-				// let query = "SELECT * FROM departments";
-				// return db.listData(query);
+			choices: async function (answers) {
+				let query = "SELECT * FROM departments";
+				let choices = await db.listData(query);
+				return choices;
 			},
 		},
 	],
@@ -115,27 +113,24 @@ const add = {
 			type: "list",
 			name: "empRole",
 			message: "Which role is this employee in?",
-			choices: function (answers) {
-				return [1, 2, 3];
-				// error: not waiting for list of choices
-				// let query = "SELECT id, title FROM roles";
-				// return db.listData(query);
+			choices: async function (answers) {
+				let query = "SELECT id, title FROM roles";
+				let choices = await db.listData(query);
+				return choices;
 			},
 		},
 		{
 			type: "list",
 			name: "empMgr",
 			message: "Who is the manager for this employee?",
-			choices: function (answers) {
-				return [1, 2, 3];
-				// error: not waiting for list of choices
-				// let query = "SELECT id, CONCAT(first_name, ' ', last_name) FROM employees";
-				// return db.listData(query);
+			choices: async function (answers) {
+				let query = "SELECT id, CONCAT(first_name, ' ', last_name) FROM employees";
+				let choices = await db.listData(query);
+				return choices;
 			},
 		},
 	],
 };
-
 const update = {
 	updateDept: [
 		{

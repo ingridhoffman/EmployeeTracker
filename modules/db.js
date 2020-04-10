@@ -1,9 +1,6 @@
 // Node dependencies
 const mysql = require("mysql");
 
-// Local dependencies
-const display = require("./display");
-
 // Module export
 const db = module.exports;
 
@@ -22,31 +19,36 @@ connection.connect(function (err) {
 });
 
 // main application functions
-db.getData = function (query, type) {
-	connection.query(query, function (err, res) {
-		if (err) throw err;
-		display.table(res, type);
+db.getData = async function (query) {
+	return new Promise((resolve) => {
+		connection.query(query, (err, res) => {
+			if (err) throw err;
+			console.log(res[0].id);
+			resolve(res);
+		});
 	});
 };
-db.putData = function (query, params, type) {
-	connection.query(query, params, function (err, res) {
-		if (err) throw err;
-		console.log("Update complete.");
+db.putData = async function (query, params, type) {
+	return new Promise((resolve) => {
+		connection.query(query, params, function (err, res) {
+			if (err) throw err;
+			resolve(res);
+		});
 	});
 };
 
 // inquirer prompts lists
-db.listData = function (query) {
-	connection.query(query, function (err, res) {
-		if (err) throw err;
-		let listArray = res.map((item) => {
-			let values = Object.values(item);
-			console.log(values);
-			let container = { name: values[1], value: values[0] };
-			console.log(container);
-			return container;
+db.listData = async function (query) {
+	return new Promise((resolve) => {
+		connection.query(query, function (err, res) {
+			if (err) throw err;
+			let listArray = res.map((item) => {
+				let values = Object.values(item);
+				let container = { name: values[1], value: values[0] };
+				return container;
+			});
+			console.log(listArray);
+			resolve(listArray);
 		});
-		console.log(listArray);
-		return listArray;
 	});
 };
