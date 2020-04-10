@@ -1,6 +1,10 @@
 // Node dependencies
 const inquirer = require("inquirer");
 
+// Local dependencies
+const db = require("./db");
+
+// Application prompts
 const mainMenu = [
 	{
 		type: "list",
@@ -13,9 +17,9 @@ const mainMenu = [
 		name: "view",
 		message: "What would you like to view?",
 		choices: [
-			"All Departments",
-			"All Roles",
-			"All Employees",
+			{ name: "All Departments", value: "dept" },
+			{ name: "All Roles", value: "role" },
+			{ name: "All Employees", value: "employee" },
 			new inquirer.Separator(),
 			"Employees by Department",
 			"Employees by Manager",
@@ -28,7 +32,11 @@ const mainMenu = [
 		type: "list",
 		name: "add",
 		message: "What would you like to add?",
-		choices: ["Department", "Role", "Employee"],
+		choices: [
+			{ name: "Department", value: "dept" },
+			{ name: "Role", value: "role" },
+			{ name: "Employee", value: "employee" },
+		],
 		when: function (answers) {
 			return answers.main === "ADD";
 		},
@@ -37,7 +45,11 @@ const mainMenu = [
 		type: "list",
 		name: "update",
 		message: "What would you like to update?",
-		choices: ["Department", "Role", "Employee"],
+		choices: [
+			{ name: "Department", value: "dept" },
+			{ name: "Role", value: "role" },
+			{ name: "Employee", value: "employee" },
+		],
 		when: function (answers) {
 			return answers.main === "UPDATE";
 		},
@@ -46,7 +58,11 @@ const mainMenu = [
 		type: "list",
 		name: "remove",
 		message: "What would you like to remove?",
-		choices: ["Department", "Role", "Employee"],
+		choices: [
+			{ name: "Department", value: "dept" },
+			{ name: "Role", value: "role" },
+			{ name: "Employee", value: "employee" },
+		],
 		when: function (answers) {
 			return answers.main === "REMOVE";
 		},
@@ -76,7 +92,12 @@ const add = {
 			type: "list",
 			name: "roleDept",
 			message: "Which department is this role in?",
-			choices: [],
+			choices: function (answers) {
+				return [1, 2, 3];
+				// error: not waiting for list of choices
+				// let query = "SELECT * FROM departments";
+				// return db.listData(query);
+			},
 		},
 	],
 	addEmp: [
@@ -94,7 +115,23 @@ const add = {
 			type: "list",
 			name: "empRole",
 			message: "Which role is this employee in?",
-			choices: [],
+			choices: function (answers) {
+				return [1, 2, 3];
+				// error: not waiting for list of choices
+				// let query = "SELECT id, title FROM roles";
+				// return db.listData(query);
+			},
+		},
+		{
+			type: "list",
+			name: "empMgr",
+			message: "Who is the manager for this employee?",
+			choices: function (answers) {
+				return [1, 2, 3];
+				// error: not waiting for list of choices
+				// let query = "SELECT id, CONCAT(first_name, ' ', last_name) FROM employees";
+				// return db.listData(query);
+			},
 		},
 	],
 };

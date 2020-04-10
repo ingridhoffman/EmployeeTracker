@@ -11,6 +11,7 @@ display.table = function (res, type) {
 	res.map((item) => {
 		data.push(Object.values(item));
 	});
+	console.log(res);
 	switch (type) {
 		case "dept":
 			head = ["ID", "Department Name"];
