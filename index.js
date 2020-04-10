@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 8080;
 
 // Main application
 async function runApp() {
+	console.log("\x1b[34m\x1b[1m", "\n", "WELCOME TO YOUR EMPLOYEE DATABASE", "\n");
 	const answer = await inquirer.prompt(prompts.mainMenu);
 	switch (answer.main) {
 		case "VIEW":
@@ -21,6 +22,9 @@ async function runApp() {
 			return addData(answer.add);
 		case "UPDATE":
 			return updateData(answer.update);
+		case "EXIT":
+			db.end();
+			process.exit();
 	}
 }
 

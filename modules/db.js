@@ -15,10 +15,9 @@ const connection = mysql.createConnection({
 });
 connection.connect(function (err) {
 	if (err) throw err;
-	console.log("connected");
 });
 
-// main application functions
+// Main application functions
 db.getData = async function (query) {
 	return new Promise((resolve) => {
 		connection.query(query, (err, res) => {
@@ -37,7 +36,7 @@ db.putData = async function (query, params, type) {
 	});
 };
 
-// inquirer prompts lists
+// Inquirer prompts lists
 db.listData = async function (query) {
 	return new Promise((resolve) => {
 		connection.query(query, function (err, res) {
@@ -47,8 +46,10 @@ db.listData = async function (query) {
 				let container = { name: values[1], value: values[0] };
 				return container;
 			});
-			console.log(listArray);
 			resolve(listArray);
 		});
 	});
 };
+
+// End conection
+db.end = () => connection.end();
