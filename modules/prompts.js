@@ -4,6 +4,23 @@ const inquirer = require("inquirer");
 // Local dependencies
 const db = require("./db");
 
+// Database queries
+async function deptList() {
+	let query = "SELECT * FROM departments";
+	let choices = await db.listData(query);
+	return choices;
+}
+async function roleList() {
+	let query = "SELECT id, title FROM roles";
+	let choices = await db.listData(query);
+	return choices;
+}
+async function employeeList() {
+	let query = "SELECT id, CONCAT(first_name, ' ', last_name) FROM employees";
+	let choices = await db.listData(query);
+	return choices;
+}
+
 // Application prompts
 const mainMenu = [
 	{
@@ -92,9 +109,7 @@ const add = {
 			name: "roleDept",
 			message: "Which department is this role in?",
 			choices: async function (answers) {
-				let query = "SELECT * FROM departments";
-				let choices = await db.listData(query);
-				return choices;
+				return deptList();
 			},
 		},
 	],
@@ -114,9 +129,7 @@ const add = {
 			name: "empRole",
 			message: "Which role is this employee in?",
 			choices: async function (answers) {
-				let query = "SELECT id, title FROM roles";
-				let choices = await db.listData(query);
-				return choices;
+				return roleList();
 			},
 		},
 		{
@@ -124,9 +137,7 @@ const add = {
 			name: "empMgr",
 			message: "Who is the manager for this employee?",
 			choices: async function (answers) {
-				let query = "SELECT id, CONCAT(first_name, ' ', last_name) FROM employees";
-				let choices = await db.listData(query);
-				return choices;
+				return employeeList();
 			},
 		},
 	],
@@ -137,11 +148,13 @@ const update = {
 			type: "list",
 			name: "dept",
 			message: "Which department would you like to update?",
-			choices: [],
+			choices: async function (answers) {
+				return deptList();
+			},
 		},
 		{
 			type: "input",
-			name: "dept",
+			name: "deptName",
 			message: "What is the new name for this department?",
 		},
 	],
@@ -150,76 +163,104 @@ const update = {
 			type: "list",
 			name: "role",
 			message: "Which role would you like to update?",
-			choices: [],
+			choices: async function (answers) {
+				return roleList();
+			},
 		},
 		{
 			type: "list",
 			name: "roleProp",
 			message: "What would you like to update for this role?",
-			choices: ["Title", "Salary", "Department"],
+			choices: [
+				{ name: "Title", value: "title" },
+				{ name: "Salary", value: "salary" },
+				{ name: "Department", value: "dept_id" },
+			],
 		},
 		{
 			type: "input",
-			name: "title",
+			name: "change",
 			message: "What is the new title for this role?",
 			when: function (answers) {
-				return answers.roleProp === "Title";
+				return answers.roleProp === "title";
 			},
 		},
 		{
 			type: "input",
-			name: "salary",
+			name: "change",
 			message: "What is the new salary for this role?",
 			when: function (answers) {
-				return answers.roleProp === "Salary";
+				return answers.roleProp === "salary";
 			},
 		},
 		{
 			type: "list",
-			name: "roleDept",
+			name: "change",
 			message: "Which department is this role moving to?",
-			choices: [],
+			choices: async function (answers) {
+				return deptList();
+			},
 			when: function (answers) {
-				return answers.roleProp === "Department";
+				return answers.roleProp === "dept_id";
 			},
 		},
 	],
-	updateEmployee: [
+	updateEmp: [
 		{
 			type: "list",
 			name: "emp",
 			message: "Which employee would you like to update?",
-			choices: [],
+			choices: async function (answers) {
+				return employeeList();
+			},
 		},
 		{
 			type: "list",
 			name: "empProp",
 			message: "What would you like to update for this employee?",
-			choices: ["First Name", "Last Name", "Role"],
+			choices: [
+				{ name: "First Name", value: "first_name" },
+				{ name: "Last Name", value: "last_name" },
+				{ name: "Role", value: "role_id" },
+				{ name: "Manager", value: "manager_id" },
+			],
 		},
 		{
 			type: "input",
-			name: "firstName",
+			name: "change",
 			message: "What is the new first name for this employee?",
 			when: function (answers) {
-				return answers.roleProp === "First Name";
+				return answers.empProp === "first_name";
 			},
 		},
 		{
 			type: "input",
-			name: "lastName",
+			name: "change",
 			message: "What is the new last name for this employee?",
 			when: function (answers) {
-				return answers.roleProp === "Last Name";
+				return answers.empProp === "last_name";
 			},
 		},
 		{
 			type: "list",
-			name: "empRole",
+			name: "change",
 			message: "What is this employee's new role?",
-			choices: [],
+			choices: async function (answers) {
+				return roleList();
+			},
 			when: function (answers) {
-				return answers.roleProp === "Role";
+				return answers.empProp === "role_id";
+			},
+		},
+		{
+			type: "list",
+			name: "change",
+			message: "What is this employee's new manager?",
+			choices: async function (answers) {
+				return employeeList();
+			},
+			when: function (answers) {
+				return answers.empProp === "manager_id";
 			},
 		},
 	],
@@ -241,7 +282,7 @@ const remove = {
 			choices: [],
 		},
 	],
-	removeEmployee: [
+	removeEmp: [
 		{
 			type: "list",
 			name: "emp",

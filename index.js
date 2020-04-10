@@ -19,6 +19,8 @@ async function runApp() {
 			return viewData(answer.view);
 		case "ADD":
 			return addData(answer.add);
+		case "UPDATE":
+			return updateData(answer.update);
 	}
 }
 
@@ -76,10 +78,34 @@ async function addData(addAnswer) {
 			};
 			break;
 	}
-	console.log("before put data");
 	await db.putData(query, params);
-	console.log("before get data");
 	await viewData(addAnswer);
+}
+
+// Update data in database
+async function updateData(updateAnswer) {
+	let answer;
+	let query;
+	let params;
+	switch (updateAnswer) {
+		case "dept":
+			answer = await inquirer.prompt(prompts.update.updateDept);
+			query = "UPDATE departments SET dept = ? WHERE id = ?";
+			params = [answer.deptName, answer.dept];
+			break;
+		case "role":
+			answer = await inquirer.prompt(prompts.update.updateRole);
+			query = "UPDATE roles SET ? WHERE id = ?";
+			params = [{ [answer.roleProp]: answer.change }, answer.role];
+			break;
+		case "employee":
+			answer = await inquirer.prompt(prompts.update.updateEmp);
+			query = "UPDATE employees SET ? WHERE id = ?";
+			params = [{ [answer.empProp]: answer.change }, answer.emp];
+			break;
+	}
+	await db.putData(query, params);
+	await viewData(updateAnswer);
 }
 
 // Start app when server is listening
