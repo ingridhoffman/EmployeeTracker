@@ -12,6 +12,7 @@ So that I can organize and plan my business
 
 ### Acceptance Criteria
 
+```
 GIVEN that I am a business owner
 WHEN I need to manage my employee information
 THEN I need a database to store this information including:
@@ -32,26 +33,46 @@ THEN I am presented with prompts to enter the information
 THEN the information is is added to the database
 
 WHEN I choose to remove a department, role, or employee
-THEN I am presented with a choice or what to remove, then a list of what is existing to select from, and what I select is removed from the database
+THEN I am presented with a choice of what to remove
+THEN a list of what is existing to select from
+THEN what I select is removed from the database
 
 WHEN I choose to update a department, role, or employee
-THEN I am presented with a choice of what to update, then a list of what is existing to select from, and then I can modify what I select and it is changed in the database
-
-### View the total utilized budget of a department -- ie the combined salaries of all employees in that department
+THEN I am presented with a choice of what to update
+THEN a list of what is existing to select from
+THEN I can make a change and it is updated in the database
 
 WHEN I complete what I want to do in the application
 THEN I can choose EXIT
+```
 
 ## Installation
 
+Install the application package
+
+```
+install_github("ingridhoffman/EmployeeTracker")
+```
+
+Install dependencies
+
+Create your database in MySQL
+
+Go into db.js to enter your password for the database connection
+
 ## Usage
+
+```
+node index.js
+```
 
 ### Known Issues
 
-1. Code needs refactoring for efficiency and use of updated ES6+ syntax
-2. Application crashes if an employee who is a manger of another employee is selected to be removed.
+- Code needs refactoring for efficiency and use of updated ES6+ syntax
+- Application crashes if an employee who is a manager of another employee is selected to be removed.
 
 ## Contributing
 
 Project requirements and content in the Assets folder provided by:
+
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
