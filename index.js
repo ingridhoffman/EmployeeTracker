@@ -138,8 +138,9 @@ async function deleteData(removeAnswer) {
 			break;
 		case "employee":
 			answer = await inquirer.prompt(prompts.remove.removeEmp);
-			query = "DELETE FROM employees WHERE id = ?";
 			params = [answer.emp];
+			await db.getData("UPDATE employees SET manager_id = null WHERE manager_id = ?", [params]);
+			query = "DELETE FROM employees WHERE id = ?";
 			break;
 	}
 	await db.putData(query, params);

@@ -69,7 +69,6 @@ node index.js
 ### Known Issues
 
 - Code needs refactoring for efficiency and use of updated ES6+ syntax
-- Application crashes if an employee who is a manager of another employee is selected to be removed.
 
 ## Contributing
 

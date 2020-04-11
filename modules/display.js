@@ -9,21 +9,23 @@ display.table = async function (res, type) {
 	let head = [];
 	let colWidths = [];
 	let data = [];
-	type = type.substring(0, type.indexOf("_"));
 	res.map((item) => {
 		delete item.id;
 		data.push(Object.values(item));
 	});
+	console.log(type);
+	type = type.substring(0, 3);
+	console.log(type);
 	switch (type) {
-		case "dept":
+		case "dep":
 			head = ["Department Name"];
 			colWidths = [20];
 			break;
-		case "role":
+		case "rol":
 			head = ["Title", "Salary", "Department"];
 			colWidths = [20, 10, 20];
 			break;
-		case "employee":
+		case "emp":
 			head = ["First Name", "Last Name", "Role", "Department", "Salary", "Manager"];
 			colWidths = [15, 15, 20, 20, 10, 20];
 			break;
