@@ -46,6 +46,11 @@ THEN I can choose EXIT
 
 ## Usage
 
+### Known Issues
+
+1. Code needs refactoring for efficiency and use of updated ES6+ syntax
+2. Application crashes if an employee who is a manger of another employee is selected to be removed.
+
 ## Contributing
 
 Project requirements and content in the Assets folder provided by:

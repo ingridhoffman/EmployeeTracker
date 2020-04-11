@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 8080;
 
 // Main application
 async function runApp() {
-	console.log("\x1b[34m\x1b[1m", "\n", "WELCOME TO YOUR EMPLOYEE DATABASE", "\n");
 	const answer = await inquirer.prompt(prompts.mainMenu);
 	switch (answer.main) {
 		case "VIEW":
@@ -22,6 +21,8 @@ async function runApp() {
 			return addData(answer.add);
 		case "UPDATE":
 			return updateData(answer.update);
+		case "REMOVE":
+			return deleteData(answer.remove);
 		case "EXIT":
 			db.end();
 			process.exit();
@@ -31,6 +32,7 @@ async function runApp() {
 // Get and view data from database
 async function viewData(viewAnswer) {
 	let query;
+	let params;
 	switch (viewAnswer) {
 		case "dept":
 			query = "SELECT * FROM departments";
@@ -43,14 +45,20 @@ async function viewData(viewAnswer) {
 			query =
 				"SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.dept AS department, roles.salary, COALESCE(CONCAT(manager.first_name, ' ', manager.last_name), 'N/A') AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.dept_id = departments.id LEFT JOIN employees manager ON manager.id = employees.manager_id";
 			break;
-		case "Employees by Department":
-			return console.log("This function not yet available.");
+		case "employee_dept":
+			answer = await inquirer.prompt(prompts.view.viewDept);
+			query =
+				"SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.dept AS department, roles.salary, COALESCE(CONCAT(manager.first_name, ' ', manager.last_name), 'N/A') AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.dept_id = departments.id LEFT JOIN employees manager ON manager.id = employees.manager_id WHERE departments.id = ?";
+			params = [answer.dept];
 			break;
-		case "Employees by Manager":
-			return console.log("This function not yet available.");
+		case "employee_mgr":
+			answer = await inquirer.prompt(prompts.view.viewMgr);
+			query =
+				"SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.dept AS department, roles.salary, COALESCE(CONCAT(manager.first_name, ' ', manager.last_name), 'N/A') AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN departments ON roles.dept_id = departments.id LEFT JOIN employees manager ON manager.id = employees.manager_id WHERE employees.manager_id = ?";
+			params = [answer.mgr];
 			break;
 	}
-	let res = await db.getData(query);
+	let res = await db.getData(query, params);
 	await display.table(res, viewAnswer);
 	await runApp();
 }
@@ -112,8 +120,35 @@ async function updateData(updateAnswer) {
 	await viewData(updateAnswer);
 }
 
+// Remove data from database
+async function deleteData(removeAnswer) {
+	let answer;
+	let query;
+	let params;
+	switch (removeAnswer) {
+		case "dept":
+			answer = await inquirer.prompt(prompts.remove.removeDept);
+			query = "DELETE FROM departments WHERE id = ?";
+			params = [answer.dept];
+			break;
+		case "role":
+			answer = await inquirer.prompt(prompts.remove.removeRole);
+			query = "DELETE FROM roles WHERE id = ?";
+			params = [answer.role];
+			break;
+		case "employee":
+			answer = await inquirer.prompt(prompts.remove.removeEmp);
+			query = "DELETE FROM employees WHERE id = ?";
+			params = [answer.emp];
+			break;
+	}
+	await db.putData(query, params);
+	await viewData(removeAnswer);
+}
+
 // Start app when server is listening
 app.listen(PORT, function () {
 	console.log("Server listening on: http://localhost:" + PORT, "\n");
+	console.log("\x1b[34m\x1b[1m", "\n", "WELCOME TO YOUR EMPLOYEE DATABASE", "\n");
 	runApp();
 });

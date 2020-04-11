@@ -18,11 +18,10 @@ connection.connect(function (err) {
 });
 
 // Main application functions
-db.getData = async function (query) {
+db.getData = async function (query, params) {
 	return new Promise((resolve) => {
-		connection.query(query, (err, res) => {
+		connection.query(query, params, (err, res) => {
 			if (err) throw err;
-			console.log(res[0].id);
 			resolve(res);
 		});
 	});

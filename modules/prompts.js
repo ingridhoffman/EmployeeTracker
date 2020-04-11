@@ -38,8 +38,8 @@ const mainMenu = [
 			{ name: "All Roles", value: "role" },
 			{ name: "All Employees", value: "employee" },
 			new inquirer.Separator(),
-			"Employees by Department",
-			"Employees by Manager",
+			{ name: "Employees by Department", value: "employee_dept" },
+			{ name: "Employees by Manager", value: "employee_mgr" },
 		],
 		when: function (answers) {
 			return answers.main === "VIEW";
@@ -85,6 +85,28 @@ const mainMenu = [
 		},
 	},
 ];
+const view = {
+	viewMgr: [
+		{
+			type: "list",
+			name: "mgr",
+			message: "Which manager's employees would you like to view?",
+			choices: async function (answers) {
+				return employeeList();
+			},
+		},
+	],
+	viewDept: [
+		{
+			type: "list",
+			name: "dept",
+			message: "Which department employees would you like to view?",
+			choices: async function (answers) {
+				return deptList();
+			},
+		},
+	],
+};
 const add = {
 	addDept: [
 		{
@@ -268,18 +290,40 @@ const update = {
 const remove = {
 	removeDept: [
 		{
+			type: "confirm",
+			name: "confirmDelete",
+			message: "All employees and roles associated with this department will also be deleted! Do you wamt to continue?",
+			default: false,
+		},
+		{
 			type: "list",
 			name: "dept",
 			message: "Which department would you like to remove?",
-			choices: [],
+			choices: async function (answers) {
+				return deptList();
+			},
+			when: function (answers) {
+				return answers.confirmDelete === true;
+			},
 		},
 	],
 	removeRole: [
 		{
+			type: "confirm",
+			name: "confirmDelete",
+			message: "All employees associated with this department will also be deleted! Do you wamt to continue?",
+			default: false,
+		},
+		{
 			type: "list",
 			name: "role",
 			message: "Which role would you like to remove?",
-			choices: [],
+			choices: async function (answers) {
+				return roleList();
+			},
+			when: function (answers) {
+				return answers.confirmDelete === true;
+			},
 		},
 	],
 	removeEmp: [
@@ -287,13 +331,16 @@ const remove = {
 			type: "list",
 			name: "emp",
 			message: "Which employee would you like to remove?",
-			choices: [],
+			choices: async function (answers) {
+				return employeeList();
+			},
 		},
 	],
 };
 
 module.exports = {
 	mainMenu: mainMenu,
+	view: view,
 	add: add,
 	update: update,
 	remove: remove,
